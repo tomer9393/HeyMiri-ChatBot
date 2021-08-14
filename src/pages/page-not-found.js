@@ -2,6 +2,7 @@ import { html, css } from '../components/base';
 import { urlForName } from '../router';
 import { PageElementNotFound } from '../helpers/page-element-not-found';
 
+// display 404 for desktop and mobile.
 export class PageNotFound extends PageElementNotFound {
   render() {
     return html`

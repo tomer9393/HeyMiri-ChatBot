@@ -28,12 +28,6 @@ const answersArr = ['null'];
 // ChatBot
 const botUser = { id: 0, username: 'Miri Pascal', avatar: 'images/miri/2.jpg' };
 
-// Set static folder
-app.use(express.static('../'));
-app.get('/', function (req, res) {
-  res.sendFile(__dirname + '/index.html');
-});
-
 // Run when client connects
 io.on('connection', (socket) => {
   socket.on('joinChat', ({ id, name, avatar }) => {
@@ -75,13 +69,18 @@ io.on('connection', (socket) => {
       formatMessage(user.username, msg, user.id, user.avatar, undefined)
     );
 
+    // if a message has "?", its formated and gets checked if the answer exist. if so the bot will send the answer.
+    //  if there is no answer its added to the question list.
     if (msg.includes('?')) {
       let question = formatQuestion(msg);
 
+      //after formet, if length is 0 then the message was only a '?'
       if (question.length == 0) {
         return;
       }
 
+      //checks if answer exists and return the answer and a bool checker so there will not be multiple entries of
+      // the same question in diffrenet variants.
       let [answer, bool] = checkAnswerExist(question);
 
       if (answer) {
@@ -110,6 +109,8 @@ io.on('connection', (socket) => {
       formatMessage(user.username, msgReply, user.id, user.avatar, question)
     );
 
+    //checks if the reply is not a question and if there is already an answer to that question the user is replying for.
+    // if not, the reply becomes the answer
     let index = questionsArr.indexOf(formatQuestion(question.text));
     if (!msgReply.includes('?')) {
       if (index != -1 && questionsArr[index] == answersArr[index]) {
@@ -140,6 +141,7 @@ io.on('connection', (socket) => {
   });
 });
 
+// String similarity check for questions to return an answer if a question was already asked.
 function checkAnswerExist(question) {
   let results = stringSimilarity.findBestMatch(question, questionsArr);
 

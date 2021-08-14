@@ -2,6 +2,7 @@ import { LitElement, html, css, svg } from './base.js';
 import { myUserContext } from '../api/context';
 import { sharedStyles } from './shared-styles';
 
+// UserMessage component displays the messages of myUser, bot, and other users.
 export class UserMessage extends LitElement {
   static get properties() {
     return {
@@ -26,6 +27,8 @@ export class UserMessage extends LitElement {
   }
 
   render() {
+    // checks if its a reply, so that it will show in the message.
+    // also checks if its from the bot. if so it will bold the answer text.
     if (this.message.reply) {
       this.answerReply = this.message.reply;
       if (this.message.id == 0) {
@@ -154,6 +157,8 @@ export class UserMessage extends LitElement {
             </div>`}`}`;
   }
 
+  // if a user clicked the reply button, dispaching an event back to message board with the message so it will apper in the message box.
+  // when clicked again the reply is cancelled.
   replyClick(message) {
     if (!this.replyButton) {
       this.replyButton = message;

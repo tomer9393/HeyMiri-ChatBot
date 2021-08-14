@@ -4,31 +4,32 @@ const socket = io('http://localhost:5000');
 const UserList = new Subject();
 const History = new Subject();
 
-// User Join submit
+// User Join submit.
 export const emitUser = (id, name, avatar) => {
   socket.emit('joinChat', { id, name, avatar });
 };
 
-// Message submit
+// Message submit.
 export const emitMessage = (msg) => {
   socket.emit('chatMessage', msg);
 };
 
-// reply submit
+// reply submit.
 export const emitReply = (msgReply, question) => {
   socket.emit('chatReply', msgReply, question);
 };
 
-// Message from server
+// Message from server.
 socket.on('message', (message) => {
   History.next(message);
 });
 
-// User List from server
+// User List from server.
 socket.on('chatUsers', ({ users }) => {
   UserList.next(users);
 });
 
+// func to get users and messages observers.
 export const getContext = {
   getUserList: () => {
     return UserList;

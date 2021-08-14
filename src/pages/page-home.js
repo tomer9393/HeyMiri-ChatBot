@@ -25,6 +25,7 @@ export class PageHome extends PageElement {
     `;
   }
 
+  //handler for event listener if a user finished login and can continue to the chat.
   myUserJoined(event) {
     this.myUser = event.detail;
   }

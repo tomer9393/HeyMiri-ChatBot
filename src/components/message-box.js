@@ -2,6 +2,7 @@ import { LitElement, html, css, svg } from './base.js';
 import { emitMessage, emitReply } from '../api/socket';
 import { sharedStyles } from './shared-styles';
 
+// MessageBox component displays the message the user is sending and the reply refrence.
 export class MessageBox extends LitElement {
   static get properties() {
     return {
@@ -49,16 +50,19 @@ export class MessageBox extends LitElement {
     `;
   }
 
+  // shortcut for sending on enter key.
   shortcutListener(e) {
     if (e.key === 'Enter') {
       this.sendMessage();
     }
   }
 
+  // listens for message user is typing.
   updateMessage(e) {
     this.message = e.target.value;
   }
 
+  // removing spaces, checking if the message is not empty, and handel each case if its a reply or a regular message.
   sendMessage() {
     let msg = this.message.trim();
     let reply = this.reply;
