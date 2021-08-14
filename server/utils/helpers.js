@@ -31,6 +31,7 @@ let operatorMap = {
   '!=': 'not-equals'
 };
 
+// return a random response from the bot
 function botMessages(messageKind) {
   let message;
   switch (messageKind) {
@@ -52,6 +53,9 @@ function randomMsg(arr, max) {
   return arr[index];
 }
 
+// formating all questions to be similar as close as possible,
+// converting operators and numbers to words, removing extra spaces and question marks, setting to lower case,and sorting all the words
+// so that question like " how much is 3 + 2?" and the question "how much is 2 + 3?" will return the same answer.
 function formatQuestion(question) {
   let subQuestion = question.replace(/\s+/g, ' ').toLowerCase().trim();
   let qIndex = subQuestion.indexOf('?');

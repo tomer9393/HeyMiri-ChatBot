@@ -4,10 +4,11 @@ import { UserList } from './user-list';
 import { myUserContext } from '../api/context';
 import { sharedStyles } from './shared-styles';
 
+// MainChat component displays the message board and user list.
 export class MainChat extends LitElement {
   static get properties() {
     return {
-      showChat: { type: String }
+      showChat: { type: String } //showChat is for mobile view, To switch from chat to user-list.
     };
   }
 
@@ -56,11 +57,13 @@ export class MainChat extends LitElement {
     `;
   }
 
+  // handler when "show chat" button is clicked, the component is updating to set the props for message-board again.
   showChatClick() {
     this.showChat = 'chat-open';
     this.performUpdate();
   }
 
+  // handler for event listener when "show users" button was clicked inside message-board component
   showUsersClick() {
     this.showChat = '';
   }

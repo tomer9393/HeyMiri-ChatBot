@@ -3,6 +3,7 @@ import { myUserContext } from '../api/context';
 import { emitUser } from '../api/socket';
 import { sharedStyles } from './shared-styles';
 
+// UserLogin component is a Welcome page and login for new users.
 export class UserLogin extends LitElement {
   static get properties() {
     return {
@@ -17,7 +18,7 @@ export class UserLogin extends LitElement {
   constructor() {
     super();
     this.username = 'User' + Math.floor(Math.random() * 100);
-    this.myAvatar = { id: 0, path: undefined };
+    this.myAvatar = { id: 1, path: 'images/avatars/1.jpg' };
     this.avatarList = [
       { id: 1, path: 'images/avatars/1.jpg' },
       { id: 2, path: 'images/avatars/2.jpg' },
@@ -99,16 +100,12 @@ export class UserLogin extends LitElement {
                       @change="${this.updateUser}"
                     ></fc-input>
                   </div>
-                  ${this.username && this.myAvatar.id != 0
-                    ? html`
-                        <fc-button
-                          class="join-chat-button"
-                          width="large"
-                          @click="${this.greetHandle}"
-                          >Join Chat</fc-button
-                        >
-                      `
-                    : ''}
+                  <fc-button
+                    class="join-chat-button"
+                    width="large"
+                    @click="${this.greetHandle}"
+                    >Join Chat
+                  </fc-button>
                 </form>
               </div>
             </div>
@@ -122,6 +119,7 @@ export class UserLogin extends LitElement {
     `;
   }
 
+  // shortcut for completing login on enter key.
   shortcutListener(e) {
     if (e.key === 'Enter') {
       if (this.username && this.myAvatar.id != 0) {
@@ -130,14 +128,17 @@ export class UserLogin extends LitElement {
     }
   }
 
+  // listens for username choosing.
   updateUser(e) {
     this.username = e.target.value;
   }
 
+  // listens for avatar choosing.
   avatarClick(avatar) {
     this.myAvatar = avatar;
   }
 
+  // when a user completes his login, a greeting gif will show and then trigger the user joining to the server and the chat.
   greetHandle() {
     this.greet = true;
     setTimeout(() => {
@@ -145,6 +146,8 @@ export class UserLogin extends LitElement {
     }, 1800);
   }
 
+  // creating the user with his info, setting it to the context on client side, emmiting it to the server side,
+  // and dispaching the login event back to the home-page to continue to the chat.
   joinChat() {
     const user = {
       id: Math.floor(Math.random() * 100000),

@@ -3,12 +3,13 @@ import { myUserContext } from '../api/context';
 import { getContext } from '../api/socket';
 import { sharedStyles } from './shared-styles';
 
+// UserList component displays the bot and online users.
 export class UserList extends LitElement {
   static get properties() {
     return {
-      userList: { type: Array },
-      myUser: { type: Object },
-      youTag: { type: String }
+      userList: { type: Array }, // holds the online users we get from socket.
+      myUser: { type: Object }, // defines if message is from me or other user.
+      youTag: { type: String } // "You" tag in the users list for my user.
     };
   }
 
@@ -16,10 +17,12 @@ export class UserList extends LitElement {
     super();
     this.userList = [];
     this.myUser = myUserContext.getUser();
+    this.youTag = '';
+
+    // subscribe to observer of users from socket and adding them to the online users.
     getContext.getUserList().subscribe((user) => {
       this.userList = user;
     });
-    this.youTag = '';
   }
 
   static get styles() {
